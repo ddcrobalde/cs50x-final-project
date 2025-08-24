@@ -1,0 +1,158 @@
+{% extends "layout.html" %} {% block main %}
+<div class="mb-4">
+  <h3>My Cart</h3>
+</div>
+
+<div class="mb-4">
+  <form action="/add" method="post">
+    <input
+      type="hidden"
+      name="sort"
+      value="{{ request.args.get('sort', 'date') }}"
+    />
+    <div class="mb-3">
+      <input
+        type="text"
+        autocomplete="off"
+        class="form-control mx-auto w-auto"
+        name="item"
+        placeholder="Add new item"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <input
+        type="number"
+        autocomplete="off"
+        class="form-control mx-auto w-auto"
+        name="quantity"
+        placeholder="Quantity"
+        min="1"
+        required
+      />
+    </div>
+    <button class="btn btn-primary" type="submit">Add</button>
+  </form>
+</div>
+
+<div class="row justify-content-center mb-4">
+  <div class="col-10 col-md-8 col-lg-6">
+    <table class="table w-100 text-center">
+      <thead>
+        <tr>
+          <th scope="col">Status</th>
+          <th scope="col">Item</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr
+          class="{{ 'table-secondary' if row.purchased else 'table-primary' }}"
+        >
+          <td>
+            <form action="/toggle" method="post">
+              <input
+                type="hidden"
+                name="sort"
+                value="{{ request.args.get('sort', 'date') }}"
+              />
+              <input type="hidden" name="item_id" value="{{ row.id }}" />
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="check{{ row.id }}"
+                name="item_id"
+                onchange="this.form.submit()"
+                value="{{ row.id }}"
+                {%
+                if
+                row.purchased
+                %}checked{%
+                endif
+                %}
+              />
+            </form>
+          </td>
+          <td class="{{ 'purchased' if row.purchased else '' }}">
+            {{ row.item }}
+          </td>
+          <td>
+            <form
+              action="/edit"
+              method="POST"
+              class="d-flex justify-content-center align-items-center"
+            >
+              <input
+                type="hidden"
+                name="sort"
+                value="{{ request.args.get('sort', 'date') }}"
+              />
+              <input type="hidden" name="item_id" value="{{ row.id }}" />
+              <input
+                type="number"
+                name="new_quantity"
+                value="{{ row.quantity }}"
+                min="1"
+                style="text-align: center; width: 50px"
+                oninput="showButton(this)"
+                required
+              />
+              <button
+                type="submit"
+                style="padding: 2px 6px; font-size: 0.8rem; display: none"
+              >
+                ✔
+              </button>
+            </form>
+          </td>
+          <td>
+            <form action="/remove" method="post">
+              <input
+                type="hidden"
+                name="sort"
+                value="{{ request.args.get('sort', 'date') }}"
+              />
+              <input type="hidden" name="item_id" value="{{ row.id }}" />
+              <button class="btn btn-secondary btn-sm" type="submit">
+                Remove
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mb-3">
+  <form action="/" method="get">
+    <select
+      class="sort-select"
+      aria-label="Default select example"
+      name="sort"
+      onchange="this.form.submit()"
+    >
+      <option value="0" disabled selected>Sort by</option>
+      <option value="alphabetical">Name</option>
+      <option value="quantity_asc">Quantity (Asc)</option>
+      <option value="quantity_desc">Quantity (Desc)</option>
+      <option value="status">Status</option>
+      <option value="date">Date Added</option>
+    </select>
+  </form>
+</div>
+
+<div class="mb-3">
+  <form action="/clear" method="post">
+    <input
+      type="hidden"
+      name="sort"
+      value="{{ request.args.get('sort', 'date') }}"
+    />
+    <button class="btn btn-danger btn-sm" type="submit">Clear List</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,21 +1,26 @@
-# Ignore Python cache
+# Python cache & compiled files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+**/__pycache__/
 
-# Ignore virtual environment
+# Virtual environments & environment files
 venv/
 .env/
+.flaskenv
 
-# Ignore SQLite databases
+# SQLite databases
 *.db
 
-# Keep only schema
-!schema.sql
-
-# Ignore logs
+# Logs
 *.log
 
-# Ignore VS Code settings (optional)
+# IDE / Editor settings
 .vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Flask session
+flask_session/

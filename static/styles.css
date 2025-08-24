@@ -1,0 +1,35 @@
+body {
+  background-color: #1c1c1d;
+  color: #f1f1f1;
+}
+
+.navbar {
+  background-color: #333333;
+}
+
+.nav-item a {
+  color: white;
+}
+
+.sort-select {
+  width: 150px;
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.sort-select option {
+  background-color: #1c1c1d;
+  color: white;
+}
+
+td.purchased {
+  text-decoration: line-through;
+}
+
+thead th {
+  background-color: #333333 !important;
+  color: white !important;
+}
